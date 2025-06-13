@@ -32,7 +32,7 @@ Make sure the following are installed:
 ### 1️⃣ Clone the repository
 
 ```bash
-git clone https://github.com/your-username/parking-management-system.git
+git clone https://github.com/Sanket9401/parking-management-system.git
 cd parking-management-system
 ```
 
