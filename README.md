@@ -29,4 +29,19 @@ Make sure the following are installed:
 
 ## 📁 Project Structure
 
+parking-management-system/
+├── backend/
+│ ├── models/
+│ ├── db/
+│ ├── routes/
+│ ├── controllers/
+│ ├── routes/
+│ └── index.js
+├── frontend/
+│ └── src/
+│ ├── api/
+│ ├── HomePageWithForm.jsx
+│ └── App.jsx
+│ └── main.jsx
+├── README.md
 
