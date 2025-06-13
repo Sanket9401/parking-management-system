@@ -27,21 +27,28 @@ Make sure the following are installed:
 
 ---
 
-## 📁 Project Structure
+## 🚀 Getting Started
 
-parking-management-system/
-├── backend/
-│ ├── models/
-│ ├── db/
-│ ├── routes/
-│ ├── controllers/
-│ ├── routes/
-│ └── index.js
-├── frontend/
-│ └── src/
-│ ├── api/
-│ ├── HomePageWithForm.jsx
-│ └── App.jsx
-│ └── main.jsx
-├── README.md
+### 1️⃣ Clone the repository
+
+```bash
+git clone https://github.com/your-username/parking-management-system.git
+cd parking-management-system
+```
+
+🛠️ Backend Setup
+📍 Navigate to the backend folder:
+```cd backend```
+
+📦 Install dependencies:
+```npm install```
+
+▶️ Run backend server:
+```npm run dev```
+
+💻 Frontend Setup
+📍 Navigate to the frontend folder:
+
+
+
 
