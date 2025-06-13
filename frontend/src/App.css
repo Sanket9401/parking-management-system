@@ -64,6 +64,7 @@ body {
   flex-direction: row;
 }
 .slotContainer {
+  position: relative;
   width: 50px;
   height: 80px;
   display: flex;
@@ -144,8 +145,29 @@ body {
   font-size: 20px;
 }
 .selectInput,
-.selectRoleInput:hover {
+.selectRoleInput,
+.deleteButton,
+.slot:hover {
   cursor: pointer;
+}
+.deleteButton {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  padding: 3px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px solid #000;
+  z-index: 99;
+  color: #fff;
+  background-color: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.deleteButton:hover {
+  border: 1px solid;
 }
 button {
   width: 100%;

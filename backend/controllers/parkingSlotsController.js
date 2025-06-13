@@ -18,7 +18,10 @@ module.exports.requestSlots = async (req, res) => {
                 message: "Slot allocated successfully",
                 slot: result
             });
-        } else {
+        } else if (result.message === "No available slot found") {
+            res.status(200).json(result.message);
+        }
+        else {
             res.status(400).json({ message: result.message });
         }
     } catch (err) {
@@ -29,7 +32,7 @@ module.exports.requestSlots = async (req, res) => {
 
 module.exports.getAllSlotsData = async (req, res) => {
     try {
-        const slotsData = await ParkingSlot.find();
+        const slotsData = await ParkingSlot.find({});
         return res.status(200).json(slotsData)
     } catch (error) {
         console.log("Error while fetching all slots data:", error)

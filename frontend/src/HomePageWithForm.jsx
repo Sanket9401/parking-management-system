@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import {
+  exitSlot,
   fetchParkingSlotsData,
+  reassignParkingSlot,
   requestForParkingSlot,
 } from "./api/parkingSlots";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
 
 function HomePageWithForm() {
   const [formData, setFormData] = useState({
@@ -15,15 +18,13 @@ function HomePageWithForm() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [userRole, setUserRole] = useState("User");
-  const [loggedInWithAdmin, setloggedInWithAdmin] = useState(false);
+
+  const [sourceSlot, setSourceSlot] = useState(null); // clicked occupied slot (VIP)
+  const [targetSlot, setTargetSlot] = useState(null); // clicked empty slot
 
   const queryClient = useQueryClient();
 
-  const {
-    data: parkingSlotsData = [],
-    isLoading,
-    isError,
-  } = useQuery({
+  const { data: parkingSlotsData = [], refetch } = useQuery({
     queryKey: ["fetchParkingSlots"],
     queryFn: fetchParkingSlotsData,
   });
@@ -37,6 +38,23 @@ function HomePageWithForm() {
     });
   };
 
+  const { mutate: reassignSlotMutation } = useMutation({
+    mutationFn: reassignParkingSlot,
+    onSuccess: (data) => {
+      console.log("Reassigned", data);
+      refetch();
+      // queryClient.invalidateQueries(["fetchParkingSlots"]);
+      toast.success("VIP slot re-assigned successfully!");
+      setSourceSlot(null);
+      // setTargetSlot(null);
+    },
+    onError: () => {
+      toast.error("Something went wrong while reassigning.");
+      setSourceSlot(null);
+      // setTargetSlot(null);
+    },
+  });
+
   const {
     mutate: requestParkingSlotsMutation,
     isPending,
@@ -44,13 +62,32 @@ function HomePageWithForm() {
     isSuccess,
   } = useMutation({
     mutationFn: requestForParkingSlot,
-    onSuccess: () => {
+    onSuccess: (data) => {
       // Invalidate cache after success
+      console.log("Data inside onSuccess mutation", data);
+      if (data === "No available slot found") {
+        toast.success("No available slot found!");
+      } else {
+        toast.success("Parking slot alloted successfully!");
+      }
+
       queryClient.invalidateQueries(["fetchParkingSlots"]);
       setIsSubmitting(false);
     },
     onError: () => {
+      toast.success("Something went wrong while alloting slot!");
       setIsSubmitting(false);
+    },
+  });
+
+  const { mutate: emptySlotMutation } = useMutation({
+    mutationFn: exitSlot,
+    onSuccess: (data) => {
+      toast.success(data.message || "Slot emptied!");
+      queryClient.invalidateQueries(["fetchParkingSlots"]);
+    },
+    onError: () => {
+      toast.error("Failed to empty the slot.");
     },
   });
 
@@ -77,10 +114,8 @@ function HomePageWithForm() {
         value={userRole}
         className="selectRoleInput"
         onChange={(e) => {
+          toast.success("You are now an Admin!");
           setUserRole(e.target.value);
-          if (e.target.value === "Admin") {
-            setloggedInWithAdmin(true);
-          }
         }}
       >
         {["User", "Admin"].map((option) => (
@@ -97,15 +132,45 @@ function HomePageWithForm() {
             {parkingSlotsData
               ?.filter((slot) => slot.level === "L1")
               .map((slot) => (
-                <div className="slotContainer">
+                <div className="slotContainer" key={slot.slot_id}>
+                  {userRole === "Admin" && slot.is_occupied && (
+                    <span
+                      className="deleteButton"
+                      onClick={() => {
+                        emptySlotMutation(slot.vehicle_number);
+                      }}
+                    >
+                      x
+                    </span>
+                  )}
+
                   <div
-                    key={slot.slot_id}
                     className="slot"
-                    style={
-                      slot.is_occupied
-                        ? { backgroundColor: "#007bff", color: "#fff" }
-                        : null
-                    }
+                    style={{
+                      ...(slot.is_occupied && {
+                        backgroundColor: "#007bff",
+                        color: "#fff",
+                      }),
+                      ...(sourceSlot?.slot_id === slot?.slot_id && {
+                        border: "3px dotted #000",
+                      }),
+                    }}
+                    onClick={() => {
+                      if (userRole === "Admin") {
+                        if (slot.is_occupied && slot.customer_type === "VIP") {
+                          setSourceSlot(slot);
+                          toast.success("Please select target slot");
+                        } else if (!slot.is_occupied && sourceSlot) {
+                          console.log("Target slot", slot);
+                          setTargetSlot(slot);
+                          reassignSlotMutation({
+                            from_slot_id: sourceSlot.slot_id,
+                            to_slot_id: slot.slot_id,
+                            vehicle_number: sourceSlot.vehicle_number,
+                          });
+                        }
+                      }
+                    }}
                   >
                     {slot.slot_id}
                   </div>
@@ -126,15 +191,43 @@ function HomePageWithForm() {
             {parkingSlotsData
               .filter((slot) => slot.level === "L2")
               .map((slot) => (
-                <div className="slotContainer">
+                <div className="slotContainer" key={slot.slot_id}>
+                  {userRole === "Admin" && slot.is_occupied && (
+                    <span
+                      className="deleteButton"
+                      onClick={() => {
+                        emptySlotMutation(slot.vehicle_number);
+                      }}
+                    >
+                      x
+                    </span>
+                  )}
                   <div
-                    key={slot.slot_id}
                     className="slot"
-                    style={
-                      slot.is_occupied
-                        ? { backgroundColor: "#007bff", color: "#fff" }
-                        : null
-                    }
+                    style={{
+                      ...(slot.is_occupied && {
+                        backgroundColor: "#007bff",
+                        color: "#fff",
+                      }),
+                      ...(sourceSlot?.slot_id === slot?.slot_id && {
+                        border: "3px dotted #000",
+                      }),
+                    }}
+                    onClick={() => {
+                      if (userRole === "Admin") {
+                        if (slot.is_occupied && slot.customer_type === "VIP") {
+                          setSourceSlot(slot);
+                          toast.success("Please select target slot");
+                        } else if (!slot.is_occupied && sourceSlot) {
+                          setTargetSlot(slot);
+                          reassignSlotMutation({
+                            from_slot_id: sourceSlot.slot_id,
+                            to_slot_id: slot.slot_id,
+                            vehicle_number: sourceSlot.vehicle_number,
+                          });
+                        }
+                      }
+                    }}
                   >
                     {slot.slot_id}
                   </div>
