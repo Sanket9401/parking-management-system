@@ -27,6 +27,46 @@ module.exports.requestSlots = async (req, res) => {
     }
 }
 
+module.exports.getAllSlotsData = async (req, res) => {
+    try {
+        const slotsData = await ParkingSlot.find();
+        return res.status(200).json(slotsData)
+    } catch (error) {
+        console.log("Error while fetching all slots data:", error)
+        return res.status(500).json({ error: "Internal Server Error" })
+    }
+}
+
+module.exports.reAssignSlot = async (req, res) => {
+    try {
+        const { from_slot_id, to_slot_id, vehicle_number } = req.body;
+
+        const fromSlot = await ParkingSlot.findOne({ slot_id: from_slot_id });
+        const toSlot = await ParkingSlot.findOne({ slot_id: to_slot_id });
+
+        if (!fromSlot || !toSlot || toSlot.is_occupied) {
+            return res.status(400).json({ message: "Invalid slots" });
+        }
+
+        // Free up old slot
+        fromSlot.is_occupied = false;
+        fromSlot.vehicle_number = null;
+        fromSlot.customer_type = null;
+        await fromSlot.save();
+
+        // Occupy new slot
+        toSlot.is_occupied = true;
+        toSlot.vehicle_number = vehicle_number;
+        toSlot.customer_type = "VIP";
+        await toSlot.save();
+
+        return res.status(200).json({ message: "Reassigned successfully" });
+    } catch (error) {
+        console.log("Error while reassigning slot:", error)
+        return res.status(500).json({ error: "Internal Server Error" })
+    }
+}
+
 
 module.exports.exitSlot = async (req, res) => {
     const { vehicle_number } = req.body;

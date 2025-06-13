@@ -86,11 +86,12 @@ async function allocateSlot(vehicle) {
     // Occupy the slot
     slot.is_occupied = true;
     slot.vehicle_number = vehicle.vehicle_number;
+    slot.customer_type = vehicle.customer_type
     await slot.save();
 
     // Update re-entry log
     if (restricted) {
-        await ReEntryLog.findOneAndUpdate({ vehicle_number: vehicleNumber }, {
+        await ReEntryLog.findOneAndUpdate({ vehicle_number: vehicle.vehicle_number }, {
             $set: { slot_id: slot.slot_id }
         })
     } else {

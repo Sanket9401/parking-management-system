@@ -21,6 +21,9 @@ const ParkingSlotSchema = mongoose.Schema({
     vehicle_number: {
         type: String,
         last_level: String
+    },
+    customer_type: {
+        type: String,
     }
 })
 

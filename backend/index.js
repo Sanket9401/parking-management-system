@@ -37,7 +37,6 @@ db.once('open', async () => {
                 small_slots: 4,
                 medium_slots: 3,
                 large_slots: 3
-
             }
         ];
 
