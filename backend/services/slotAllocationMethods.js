@@ -100,7 +100,7 @@ async function allocateSlot(vehicle) {
             $set: { slot_id: slot.slot_id, customer_type: vehicle.customer_type }
         })
     } else {
-    //create fresh re-entry log
+        //create fresh re-entry log
         await ReEntryLog.create({
             vehicle_number: vehicle.vehicle_number,
             last_entry_time: now,
