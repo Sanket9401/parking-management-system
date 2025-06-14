@@ -58,16 +58,16 @@ Slot availability is checked using MongoDB with filtering and prioritization.
 2. Parking Level : for storing parking levels related data (e.g. capacity of level, level_id, small, medium, large available slots in that level)(configurable)
 3. ReEntryLog : for storing vehicle's data, exit time for the validation while slot re-assignment
 4. Vehicle : for storing all checked in vehicles data for the records
-5. Slot Type Distribution per Level:
-Each parking level's total slot capacity is divided into:
-1/3 small slots + remainder slot
-1/3 medium slots
+5. Slot Type Distribution per Level:  
+Each parking level's total slot capacity is divided into:  
+1/3 small slots + remainder slot  
+1/3 medium slots  
 1/3 large slots
 
 Example: In this project I have assiged 10 slots per level:
-4 small slots  (1/3 of capacity + remainder)
-3 medium slots (1/3 of capacity)
-3 large slots  (1/3 of capacity
+4 small slots  (1/3 of capacity + remainder)  
+3 medium slots (1/3 of capacity)  
+3 large slots  (1/3 of capacity  
 
 📊 The slot capacity per level is configurable and used while seeding or initializing the system.
 
@@ -87,7 +87,7 @@ git clone https://github.com/Sanket9401/parking-management-system.git
 cd parking-management-system
 ```
 
-🛠️ Backend Setup
+🛠️ Backend Setup  
 📍 Navigate to the backend folder:
 ```cd backend```
 
@@ -97,7 +97,7 @@ cd parking-management-system
 ▶️ Run backend server:
 ```npm run dev```
 
-💻 Frontend Setup
+💻 Frontend Setup  
 📍 Navigate to the frontend folder:
 ```cd ../frontend```
 
@@ -109,7 +109,7 @@ cd parking-management-system
 
 Frontend will run on: http://localhost:5173
 
-🔑 Roles
+🔑 Roles  
 User: Can request slot via form
 
 Admin: Can reassign VIP slots, empty occupied slots manually
