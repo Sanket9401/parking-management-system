@@ -121,6 +121,18 @@ Admin: Can reassign VIP slots, empty occupied slots manually
 
 To switch roles, use the dropdown in UI.
 
+## 📫 Postman API Collection
+
+You can test all available endpoints using the Postman collection below:
+
+🔗 [Download Postman Collection](./postman/parking-management-system.postman_collection.json)
+
+To import:
+1. Open Postman
+2. Click **Import** > **File**
+3. Select the exported `.json` file
+4. Hit **Import** and start testing!
+
 📦 Cases which are covered ==>
 
 1. Efficient slot allocation for vehicles
