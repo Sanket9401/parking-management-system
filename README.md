@@ -64,7 +64,8 @@ Each parking level's total slot capacity is divided into:
 1/3 medium slots  
 1/3 large slots
 
-Example: In this project I have assiged 10 slots per level:
+Example:   
+In this project I have assiged 10 slots per level:  
 4 small slots  (1/3 of capacity + remainder)  
 3 medium slots (1/3 of capacity)  
 3 large slots  (1/3 of capacity  
