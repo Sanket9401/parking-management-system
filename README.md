@@ -52,7 +52,7 @@ Slot availability is checked using MongoDB with filtering and prioritization.
 
 4. Re-entry restriction is currently set to 60 minutes but is configurable.
 
-✅ Collectios used:
+✅ Collections used:
 
 1. ParkingSlot : for storing all the slot related data (e.g. parked vehicle, slot_id, is_occupied, customer_type, level:L1 or L2)
 2. Parking Level : for storing parking levels related data (e.g. capacity of level, level_id, small, medium, large available slots in that level)(configurable)
