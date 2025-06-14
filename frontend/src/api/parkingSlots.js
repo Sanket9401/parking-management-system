@@ -1,5 +1,6 @@
 import axios from 'axios'
 
+//This functions fetches all parking slots data
 export const fetchParkingSlotsData = async () => {
   try {
     const res = await axios.get("http://localhost:8080/get-all-slots");
@@ -10,6 +11,7 @@ export const fetchParkingSlotsData = async () => {
   }
 };
 
+//This function is used to request parking slot 
 export const requestForParkingSlot = async (formData) => {
   try {
 
@@ -34,6 +36,7 @@ export const requestForParkingSlot = async (formData) => {
   }
 }
 
+//This function is used when vehicle goes out from parking slot
 export const exitSlot = async (vehicle_number) => {
   try {
     let config = {
@@ -54,6 +57,7 @@ export const exitSlot = async (vehicle_number) => {
   }
 }
 
+//This function reassigns slot for VIP/emergency customer type
 export const reassignParkingSlot = async (data) => {
   try {
     let config = {

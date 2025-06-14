@@ -12,24 +12,26 @@ import { toast } from "react-toastify";
 function HomePageWithForm() {
   const [formData, setFormData] = useState({
     vehicle_number: "",
-    vehicle_type: "",
+    vehicle_type: "", //state to hold the formData, which will be sent to API for slot request
     customer_type: "",
     entry_time: "",
   });
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [userRole, setUserRole] = useState("User");
+  const [isSubmitting, setIsSubmitting] = useState(false); //boolean for submitting data
+  const [userRole, setUserRole] = useState("User"); // for defining current role , User or Admin
 
   const [sourceSlot, setSourceSlot] = useState(null); // clicked occupied slot (VIP)
   const [targetSlot, setTargetSlot] = useState(null); // clicked empty slot
 
   const queryClient = useQueryClient();
 
+  //This query is used to sync realtime data on UI
   const { data: parkingSlotsData = [], refetch } = useQuery({
     queryKey: ["fetchParkingSlots"],
     queryFn: fetchParkingSlotsData,
   });
 
+  //Function to set state when input value changes
   const handleOnChange = (e) => {
     const { value, name } = e.target;
     console.log(value, name);
@@ -39,23 +41,22 @@ function HomePageWithForm() {
     });
   };
 
+  //mutation function to re-assign slot for VIP/emergency customer type
   const { mutate: reassignSlotMutation } = useMutation({
     mutationFn: reassignParkingSlot,
     onSuccess: (data) => {
       console.log("Reassigned", data);
-      refetch();
-      // queryClient.invalidateQueries(["fetchParkingSlots"]);
+      refetch(); // refecthing live parking slot data to sync with UI
       toast.success("VIP slot re-assigned successfully!");
       setSourceSlot(null);
-      // setTargetSlot(null);
     },
     onError: () => {
       toast.error("Something went wrong while reassigning.");
       setSourceSlot(null);
-      // setTargetSlot(null);
     },
   });
 
+  //mutation function for requesting parking slot
   const {
     mutate: requestParkingSlotsMutation,
     isPending,
@@ -72,7 +73,7 @@ function HomePageWithForm() {
         toast.success("Parking slot alloted successfully!");
       }
 
-      queryClient.invalidateQueries(["fetchParkingSlots"]);
+      queryClient.invalidateQueries(["fetchParkingSlots"]); // invalidating queries to fetdh live parking slot data to sync with UI
       setIsSubmitting(false);
     },
     onError: () => {
@@ -81,17 +82,19 @@ function HomePageWithForm() {
     },
   });
 
+  //mutation function to exit/empty slot
   const { mutate: emptySlotMutation } = useMutation({
     mutationFn: exitSlot,
     onSuccess: (data) => {
       toast.success(data.message || "Slot emptied!");
-      queryClient.invalidateQueries(["fetchParkingSlots"]);
+      queryClient.invalidateQueries(["fetchParkingSlots"]); // invalidating queries to fetdh live parking slot data to sync with UI
     },
     onError: () => {
       toast.error("Failed to empty the slot.");
     },
   });
 
+  //function to submit data which requests parking slot
   const handleOnSubmit = (e) => {
     setIsSubmitting(true);
     e.preventDefault();
@@ -136,10 +139,11 @@ function HomePageWithForm() {
               ?.filter((slot) => slot.level === "L1")
               .map((slot) => (
                 <div className="slotContainer" key={slot.slot_id}>
-                  {userRole === "Admin" && slot.is_occupied && (
+                  {userRole === "Admin" && slot.is_occupied && (   //if role is admin then only show delete button
                     <span
                       className="deleteButton"
                       onClick={() => {
+                        //this will empty the slot
                         emptySlotMutation(slot.vehicle_number);
                       }}
                     >
@@ -159,6 +163,7 @@ function HomePageWithForm() {
                       }),
                     }}
                     onClick={() => {
+                      //This is for re-assignment slot for VIP/emergency (only admin can do this)
                       if (userRole === "Admin") {
                         if (slot.is_occupied && slot.customer_type === "VIP") {
                           setSourceSlot(slot);

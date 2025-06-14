@@ -23,6 +23,7 @@ db.on('error', () => {
 db.once('open', async () => {
     console.log("Successfully connected to the database")
     try {
+        //configurable level data
         const levels = [
             {
                 level_id: "L1",
@@ -40,10 +41,12 @@ db.once('open', async () => {
             }
         ];
 
+        //if server restarting, for creating fresh slots, deleting previous db data
         await ParkingLevel.deleteMany();
         await ParkingSlot.deleteMany();
         await ReEntryLogs.deleteMany();
 
+        //creating slots for each level
         for (const level of levels) {
             await ParkingLevel.create(level);
 
@@ -59,6 +62,7 @@ db.once('open', async () => {
                 return ParkingSlot.insertMany(slots);
             };
 
+            //creating slots according to defined vehicle type in levels array
             await createSlots("small", level.small_slots);
             await createSlots("medium", level.medium_slots);
             await createSlots("large", level.large_slots);

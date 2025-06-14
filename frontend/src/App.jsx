@@ -5,7 +5,9 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function App() {
+  //using tanstack query for realtime UI changes
   const queryClient = new QueryClient();
+
   return (
     <QueryClientProvider client={queryClient}>
       <HomePageWithForm />
