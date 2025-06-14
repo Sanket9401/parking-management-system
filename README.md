@@ -48,6 +48,28 @@ cd parking-management-system
 
 💻 Frontend Setup
 📍 Navigate to the frontend folder:
+```cd ../frontend```
+
+📦 Install dependencies:
+```npm install```
+
+▶️ Run frontend server:
+```npm run dev```
+
+Frontend will run on: http://localhost:5173
+
+🔑 Roles
+User: Can request slot via form
+
+Admin: Can reassign VIP slots, empty occupied slots manually
+
+To switch roles, use the dropdown in UI.
+
+📦 Cases which are covered ==>
+
+1.
+
+
 
 
 
