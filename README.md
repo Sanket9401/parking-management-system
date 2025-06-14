@@ -125,7 +125,7 @@ To switch roles, use the dropdown in UI.
 
 You can test all available endpoints using the Postman collection below:
 
-🔗 [Download Postman Collection](./postman/parking-management-system.postman_collection.json)
+🔗 [Download Postman Collection](./postman/parking-management-system.postman_collection.json) (Click on Download raw file option in the right top corner)
 
 To import:
 1. Open Postman
