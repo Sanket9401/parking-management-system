@@ -60,20 +60,21 @@ Slot availability is checked using MongoDB with filtering and prioritization.
 4. Vehicle : for storing all checked in vehicles data for the records
 
 ✅ Slot Type Distribution per Level:  
-Each parking level's total slot capacity is divided into:  
-1/3 small slots + remainder slot  
-1/3 medium slots  
-1/3 large slots
+    Each parking level's total slot capacity is divided into:  
+    1/3 small slots + remainder slot  
+    1/3 medium slots  
+    1/3 large slots
 
-Example:   
-In this project I have assiged 10 slots per level:  
-4 small slots  (1/3 of capacity + remainder)  
-3 medium slots (1/3 of capacity)  
-3 large slots  (1/3 of capacity  
+=> Example:   
+   In this project I have assiged 10 slots per level:  
+   4 small slots  (1/3 of capacity + remainder)  
+   3 medium slots (1/3 of capacity)  
+   3 large slots  (1/3 of capacity  
 
 📊 The slot capacity per level is configurable and used while seeding or initializing the system.
 
 🔁 Re-entry Restriction Logic
+
 A regular vehicle that exited less than 60 minutes ago is not allowed to re-enter the same slot.
 
 A VIP vehicle can re-enter the same slot within 60 minutes.
@@ -90,6 +91,7 @@ cd parking-management-system
 ```
 
 🛠️ Backend Setup  
+
 📍 Navigate to the backend folder:
 ```cd backend```
 
@@ -100,6 +102,7 @@ cd parking-management-system
 ```npm run dev```
 
 💻 Frontend Setup  
+
 📍 Navigate to the frontend folder:
 ```cd ../frontend```
 
@@ -140,7 +143,7 @@ https://github.com/user-attachments/assets/7c1d91dc-2494-4f93-b2f0-256b35ff4997
 
 https://github.com/user-attachments/assets/204436fa-252b-4381-af8c-9851fc808964
 
-6. Exit/empty slot after vehicle goes out from parking slot
+6. Exit/empty slot after vehicle goes out from parking slot (only admin can do this)
 
 https://github.com/user-attachments/assets/f024f4e2-7439-409e-9636-2988cf80e543
 
