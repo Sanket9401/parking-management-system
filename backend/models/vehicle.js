@@ -5,7 +5,7 @@ const VehicleSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    type: {
+    vehicle_type: {
         type: String,
         enum: ['small', 'medium', 'large'],
         required: true
@@ -16,8 +16,7 @@ const VehicleSchema = mongoose.Schema({
         required: true
     },
     entry_time: {
-        type: Date,
-        last_level: String
+        type: String,
     }
 })
 

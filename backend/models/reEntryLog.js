@@ -13,6 +13,9 @@ const ReEntryLogSchema = mongoose.Schema({
     },
     slot_id: {
         type: String,
+    },
+    customer_type: {
+        type: String
     }
 })
 

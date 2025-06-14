@@ -14,6 +14,7 @@ function HomePageWithForm() {
     vehicle_number: "",
     vehicle_type: "",
     customer_type: "",
+    entry_time: "",
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -94,17 +95,19 @@ function HomePageWithForm() {
   const handleOnSubmit = (e) => {
     setIsSubmitting(true);
     e.preventDefault();
-    console.log("CAlling API");
+    console.log("CAlling API", formData);
     requestParkingSlotsMutation({
       vehicle_number: formData.vehicle_number,
       vehicle_type: formData.vehicle_type.toLowerCase(),
       customer_type:
         formData.customer_type === "VIP/emergency" ? "VIP" : "regular",
+      entry_time: formData.entry_time,
     });
     setFormData({
       vehicle_number: "",
       vehicle_type: "",
       customer_type: "",
+      entry_time: "",
     });
   };
 
@@ -296,6 +299,16 @@ function HomePageWithForm() {
               </option>
             ))}
           </select>
+          <input
+            type="time"
+            value={formData.entry_time}
+            className="input"
+            placeholder="Select"
+            name="entry_time"
+            onChange={(e) => {
+              handleOnChange(e);
+            }}
+          />
           <button>{isSubmitting ? "Please wait..." : "Submit"}</button>
         </form>
       </div>

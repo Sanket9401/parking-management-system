@@ -1,0 +1,113 @@
+{
+	"info": {
+		"_postman_id": "b04bcfc3-841f-4895-9032-b1087cba85b8",
+		"name": "parking-management-system",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28578076"
+	},
+	"item": [
+		{
+			"name": "request-slot",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"vehicle_number\":\"MH07SU5851\",\r\n    \"vehicle_type\":\"small\",\r\n    \"customer_type\":\"regular\",\r\n    \"entry_time\":\"12:10\"\r\n    \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/request-slot",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"request-slot"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "exit-slot",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"vehicle_number\":\"MH04HY9815\"\r\n    \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/exit-slot",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"exit-slot"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-all-slot-data",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/get-all-slots",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"get-all-slots"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "re-assign-slot",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"from_slot_id\":\"L1-L8\",\r\n    \"to_slot_id\":\"L1-L10\",\r\n    \"vehicle_number\":\"MH04HY9575\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/reassign-slot",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"reassign-slot"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

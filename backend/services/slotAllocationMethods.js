@@ -11,26 +11,29 @@ function getDateMinutesDiff(date1, date2) {
     return (date1.getTime() - date2.getTime()) / (1000 * 60);
 }
 
-//This will find the available slot for respective vehicle
-async function findAvailableSlot(vehicleType, vehicleNumber, restricted = null) {
+//Function to find the available slot for respective vehicle
+async function findAvailableSlot(vehicleType, vehicleNumber) {
     //This means small vehicles are allowed to park in small, medium, large slot, medium vehicles are allowed in medium and large,
     // and large will be only allowed in large slots
     const allowedSlotTypes = {
-        small: ["small", "medium", "large"],
-        medium: ["medium", "large"],
-        large: ["large"]
+        small: ["small", "medium", "large"], //configurable
+        medium: ["medium", "large"], //configurable
+        large: ["large"]  //configurable
     };
 
+    //Checking the requested vehicle is in ReEntryLog or not so as to check logic which doesn't allows to renter in same slot 
+    //within 1 hr (configurable)
     const recentEntry = await ReEntryLog.findOne({ vehicle_number: vehicleNumber }).sort({ last_entry_time: -1 });
 
     let excludedSlotId = null;
 
+    //If vehicle found in ReEntryLogs, then checking time difference
     if (recentEntry) {
         const now = new Date();
-        const exitTime = recentEntry.exit_time || recentEntry.last_entry_time; // fallback if exit_time is not present
+        const exitTime = recentEntry.last_entry_time;
         const timeDiff = getDateMinutesDiff(now, new Date(exitTime));
 
-        if (timeDiff < REENTRY_LIMIT_MINUTES) {
+        if (timeDiff < REENTRY_LIMIT_MINUTES && recentEntry.customer_type === "regular") {
             excludedSlotId = recentEntry.slot_id;
         }
     }
@@ -48,6 +51,7 @@ async function findAvailableSlot(vehicleType, vehicleNumber, restricted = null) 
     return await ParkingSlot.findOne(query).sort({ level: 1 });
 }
 
+//This function will return boolean value whether the requested vehicle is allowed to park in that slot or not
 async function isReEntryRestricted(vehicleNumber, now) {
     const recentEntry = await ReEntryLog.findOne({ vehicle_number: vehicleNumber }).sort({ last_entry_time: -1 });
 
@@ -65,6 +69,7 @@ async function isReEntryRestricted(vehicleNumber, now) {
     return false;
 }
 
+//This function allocates the slot for requested vehicle
 async function allocateSlot(vehicle) {
     const now = new Date();
 
@@ -92,14 +97,15 @@ async function allocateSlot(vehicle) {
     // Update re-entry log
     if (restricted) {
         await ReEntryLog.findOneAndUpdate({ vehicle_number: vehicle.vehicle_number }, {
-            $set: { slot_id: slot.slot_id }
+            $set: { slot_id: slot.slot_id, customer_type: vehicle.customer_type }
         })
     } else {
         await ReEntryLog.create({
             vehicle_number: vehicle.vehicle_number,
             last_entry_time: now,
             level: slot.level,
-            slot_id: slot.slot_id
+            slot_id: slot.slot_id,
+            customer_type: vehicle.customer_type
         });
     }
 
