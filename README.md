@@ -58,7 +58,8 @@ Slot availability is checked using MongoDB with filtering and prioritization.
 2. Parking Level : for storing parking levels related data (e.g. capacity of level, level_id, small, medium, large available slots in that level)(configurable)
 3. ReEntryLog : for storing vehicle's data, exit time for the validation while slot re-assignment
 4. Vehicle : for storing all checked in vehicles data for the records
-5. Slot Type Distribution per Level:  
+
+✅ Slot Type Distribution per Level:  
 Each parking level's total slot capacity is divided into:  
 1/3 small slots + remainder slot  
 1/3 medium slots  
